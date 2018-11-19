@@ -59,6 +59,8 @@ namespace App
             services.AddLogging(loggingBuilder =>
                 loggingBuilder.AddSerilog(dispose: true));
 
+            services.AddRouting(options => options.LowercaseUrls = true);
+
             services.AddMvc()
             .ConfigureApplicationPartManager(p =>
             {
