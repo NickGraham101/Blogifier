@@ -30,6 +30,7 @@ namespace App.Pages.Admin.Settings
             Notifications = await _ns.GetNotifications(author.Id);
 
             if (!IsAdmin)
+                //TO DO: force an error, fix casing and test
                 return RedirectToPage("../Shared/_Error", new { code = 403 });
 
             var pager = new Pager(page);

@@ -57,6 +57,9 @@ namespace App.Pages.Admin.Settings
             Notifications = await _ns.GetNotifications(author.Id);
 
             if (!IsAdmin)
+                //TO DO: fix error redirect (tested in blogifier sandbox, doesn't redirect to error page as intended
+                //TO DO: force an error, fix casing and test
+                //TEST: paste https://alphablog.grahamandtonic.com/admin/settings/register
                 return RedirectToPage("../Shared/_Error", new { code = 403 });
 
             return Page();

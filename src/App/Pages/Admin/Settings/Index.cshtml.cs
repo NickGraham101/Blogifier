@@ -25,6 +25,7 @@ namespace App.Pages.Admin.Settings
         {
             await SetModel();
             if (!IsAdmin)
+                //TO DO: force an error, fix casing and test
                 return RedirectToPage("../Shared/_Error", new { code = 403 });
 
             return Page();
@@ -40,6 +41,7 @@ namespace App.Pages.Admin.Settings
 
             await SetModel();
             if (!IsAdmin)
+                //TO DO: force an error, fix casing and test
                 return RedirectToPage("../Shared/_Error", new { code = 403 });
 
             return Page();
