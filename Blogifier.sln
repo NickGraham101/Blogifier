@@ -27,6 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{6015AFDB-9
 	ProjectSection(SolutionItems) = preProject
 		docs\AppSettings.md = docs\AppSettings.md
 		docs\Build.md = docs\Build.md
+		docs\CustomFields.md = docs\CustomFields.md
 		docs\Disqus.md = docs\Disqus.md
 		docs\Import.md = docs\Import.md
 		docs\MySQL.md = docs\MySQL.md
@@ -41,6 +42,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{BE5E262F
 	ProjectSection(SolutionItems) = preProject
 		build\build.cake = build\build.cake
 		build\build.ps1 = build\build.ps1
+		build\sonar-project.properties = build\sonar-project.properties
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Upgrade", "src\Upgrade\Upgrade.csproj", "{CECA836F-2FFA-47DA-B846-8F44C2A4B783}"
