@@ -21,7 +21,6 @@ pr:
 
 stages:
 - stage: BuildTestAndPublishContainer
-  dependsOn: PublishArtifacts
   variables:
   - group: ContainerRegistryVariables
   jobs:
