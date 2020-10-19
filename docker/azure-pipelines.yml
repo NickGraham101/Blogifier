@@ -20,7 +20,7 @@ pr:
     - master
 
 stages:
-- stage: BuildTestAndPublishContainer
+- stage: BuildAndPublishContainer
   variables:
   - group: ContainerRegistryVariables
   jobs:
