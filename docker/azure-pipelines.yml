@@ -1,0 +1,32 @@
+pool:
+  vmImage: ubuntu-latest
+
+resources:
+  repositories:
+    - repository: self
+    - repository: grahamandtonic
+      type: git
+      name: grahamandtonic/grahamandtonic
+      ref: refs/heads/master
+
+trigger:
+  branches:
+    include:
+    - master
+
+pr:
+  branches:
+    include:
+    - master
+
+stages:
+- stage: BuildTestAndPublishContainer
+  dependsOn: PublishArtifacts
+  variables:
+  - group: ContainerRegistryVariables
+  jobs:
+  - template: JobTemplates\publish-container-image.yml
+    parameters:
+      ContainerRegistryPassword: $(ContainerRegistryPassword)
+      ContainerRegistryAdminUser: $(ContainerRegistryAdminUser)
+      ImageName: blogifier
