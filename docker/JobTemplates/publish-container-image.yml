@@ -6,27 +6,30 @@ parameters:
 jobs:
 - job: BuildAndPublishContainer
   steps:
-  - checkout: grahamandtonic
-    path: grahamandtonic/
-  - task: gittools.gitversion.gitversion-task.GitVersion@5
-    displayName: GitVersion
+  - checkout: self
+    path: 'Blogifier/'
+  - checkout: dfc-devops
+    path: 'dfc-devops/'
+  - task: gittools.gittools.execute-gitversion-task.gitversion/execute@0
+    displayName: gitversion/execute
     inputs:
+      targetPath: $(Pipeline.Workspace)/Blogifier/
       useConfigFile: true
-      configFilePath: GitVersion.yml
+      configFilePath: $(Pipeline.Workspace)/Blogifier/docker/GitVersion.yml
   - task: PowerShell@2
-    displayName: 'PowerShell script: Set-DockerImageTag'
+    displayName: 'PowerShell: Set-DockerImageTag'
     inputs:
       targetType: 'filePath'
-      filePath: $(Pipeline.Workspace)/grahamandtonic/grahamandtonic-dotnet/src/grahamandtonic.scripts/Set-DockerImageTag.ps1
+      filePath: $(Pipeline.Workspace)/dfc-devops/grahamandtonic-dotnet/src/grahamandtonic.scripts/Set-DockerImageTag.ps1
       arguments: -BuildBuildNumber $(GitVersion.MajorMinorPatch) -BuildSourceBranchName $(Build.SourceBranchName) -Verbose
   - script: |
       docker login -u ${{ parameters.ContainerRegistryAdminUser }} -p ${{ parameters.ContainerRegistryPassword }} ${{ parameters.ContainerRegistryAdminUser }}.azurecr.io
       docker build -t ${{ parameters.ImageName }} .
       docker tag ${{ parameters.ImageName }} ${{ parameters.ContainerRegistryAdminUser }}.azurecr.io/${{ parameters.ImageName }}:$(DockerImageTag)
       docker tag ${{ parameters.ImageName }} ${{ parameters.ContainerRegistryAdminUser }}.azurecr.io/${{ parameters.ImageName }}
-    displayName: 'Build azure devops  container'
+    displayName: 'Build container'
   - script: |
       docker login -u ${{ parameters.ContainerRegistryAdminUser }} -p ${{ parameters.ContainerRegistryPassword }} ${{ parameters.ContainerRegistryAdminUser }}.azurecr.io
       docker push ${{ parameters.ContainerRegistryAdminUser }}.azurecr.io/${{ parameters.ImageName }}:$(DockerImageTag)
       docker push ${{ parameters.ContainerRegistryAdminUser }}.azurecr.io/${{ parameters.ImageName }}
-    displayName: 'Publish azure devops  container'
+    displayName: 'Publish container'

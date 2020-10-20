@@ -4,10 +4,12 @@ pool:
 resources:
   repositories:
     - repository: self
-    - repository: grahamandtonic
-      type: git
-      name: grahamandtonic/grahamandtonic
-      ref: refs/heads/master
+    - repository: dfc-devops
+      type: github
+      name: NickGraham101/dfc-devops
+      ##TO DO: revert to tag
+      ref: refs/heads/AddSetDockerImageTagsScript
+      endpoint: NickGraham101
 
 trigger:
   branches:
