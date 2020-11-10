@@ -12,6 +12,7 @@ jobs:
       versionSpec: 5.x
   - task: gittools.gittools.execute-gitversion-task.gitversion/execute@0
     displayName: gitversion/execute
+  - checkout: dfc-devops
   - task: PowerShell@2
     displayName: 'PowerShell: Set-DockerImageTag'
     inputs:
