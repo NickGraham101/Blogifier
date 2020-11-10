@@ -6,18 +6,12 @@ parameters:
 jobs:
 - job: BuildAndPublishContainer
   steps:
-  - checkout: self
-  - checkout: dfc-devops
   - task: gittools.gittools.setup-gitversion-task.gitversion/setup@0
     displayName: gitversion/setup
     inputs:
       versionSpec: 5.x
   - task: gittools.gittools.execute-gitversion-task.gitversion/execute@0
     displayName: gitversion/execute
-    inputs:
-      targetPath: $(Build.SourcesDirectory)/Blogifier/
-      useConfigFile: true
-      configFilePath: $(Build.SourcesDirectory)/Blogifier/docker/GitVersion.yml
   - task: PowerShell@2
     displayName: 'PowerShell: Set-DockerImageTag'
     inputs:
