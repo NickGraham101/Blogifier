@@ -7,9 +7,7 @@ jobs:
 - job: BuildAndPublishContainer
   steps:
   - checkout: self
-    path: 'Blogifier/'
   - checkout: dfc-devops
-    path: 'dfc-devops/'
   - task: gittools.gittools.setup-gitversion-task.gitversion/setup@0
     displayName: gitversion/setup
     inputs:
