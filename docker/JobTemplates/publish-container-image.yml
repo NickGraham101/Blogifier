@@ -16,10 +16,6 @@ jobs:
       versionSpec: 5.x
   - task: gittools.gittools.execute-gitversion-task.gitversion/execute@0
     displayName: gitversion/execute
-    inputs:
-      targetPath: Blogifier/
-      useConfigFile: true
-      configFilePath: $(Pipeline.Workspace)/Blogifier/docker/GitVersion.yml
   - task: PowerShell@2
     displayName: 'PowerShell: Set-DockerImageTag'
     inputs:
