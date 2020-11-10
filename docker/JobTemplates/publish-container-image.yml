@@ -17,12 +17,12 @@ jobs:
     inputs:
       targetPath: $(Build.SourcesDirectory)/Blogifier/
       useConfigFile: true
-      configFilePath: $(Pipeline.Workspace)/Blogifier/docker/GitVersion.yml
+      configFilePath: $(Build.SourcesDirectory)/Blogifier/docker/GitVersion.yml
   - task: PowerShell@2
     displayName: 'PowerShell: Set-DockerImageTag'
     inputs:
       targetType: 'filePath'
-      filePath: $(Pipeline.Workspace)/dfc-devops/grahamandtonic-dotnet/src/grahamandtonic.scripts/Set-DockerImageTag.ps1
+      filePath: $(Build.SourcesDirectory)/dfc-devops/grahamandtonic-dotnet/src/grahamandtonic.scripts/Set-DockerImageTag.ps1
       arguments: -BuildBuildNumber $(GitVersion.MajorMinorPatch) -BuildSourceBranchName $(Build.SourceBranchName) -Verbose
   - script: |
       docker login -u ${{ parameters.ContainerRegistryAdminUser }} -p ${{ parameters.ContainerRegistryPassword }} ${{ parameters.ContainerRegistryAdminUser }}.azurecr.io
