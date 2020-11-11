@@ -7,8 +7,7 @@ resources:
     - repository: dfc-devops
       type: github
       name: NickGraham101/dfc-devops
-      ##TO DO: revert to tag
-      ref: refs/heads/AddSetDockerImageTagsScript
+      ref: refs/tags/v1.13.0
       endpoint: NickGraham101
 
 trigger:
