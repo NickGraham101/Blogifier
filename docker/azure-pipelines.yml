@@ -1,0 +1,32 @@
+pool:
+  vmImage: ubuntu-latest
+
+resources:
+  repositories:
+    - repository: self
+    - repository: dfc-devops
+      type: github
+      name: NickGraham101/dfc-devops
+      ref: refs/tags/v1.13.0
+      endpoint: NickGraham101
+
+trigger:
+  branches:
+    include:
+    - master
+
+pr:
+  branches:
+    include:
+    - master
+
+stages:
+- stage: BuildAndPublishContainer
+  variables:
+  - group: ContainerRegistryVariables
+  jobs:
+  - template: JobTemplates\publish-container-image.yml
+    parameters:
+      ContainerRegistryPassword: $(ContainerRegistryPassword)
+      ContainerRegistryAdminUser: $(ContainerRegistryAdminUser)
+      ImageName: blogifier

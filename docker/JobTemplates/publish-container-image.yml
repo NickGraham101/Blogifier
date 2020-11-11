@@ -1,0 +1,35 @@
+parameters:
+  ContainerRegistryPassword: 
+  ContainerRegistryAdminUser: 
+  ImageName: 
+
+jobs:
+- job: BuildAndPublishContainer
+  steps:
+  ##TO DO: revert to multirepo checkout and remove script download task when https://github.com/GitTools/actions/issues/172 is fixed
+  - task: gittools.gittools.setup-gitversion-task.gitversion/setup@0
+    displayName: gitversion/setup
+    inputs:
+      versionSpec: 5.x
+  - task: gittools.gittools.execute-gitversion-task.gitversion/execute@0
+    displayName: gitversion/execute
+  - powershell: Invoke-WebRequest -Uri https://raw.githubusercontent.com/NickGraham101/dfc-devops/master/PSCoreScripts/Set-DockerImageTag.ps1 -OutFile $(Build.SourcesDirectory)/Set-DockerImageTag.ps1
+    displayName: 'Download Set-DockerImageTag.ps1 script'
+  - task: PowerShell@2
+    displayName: 'PowerShell: Set-DockerImageTag'
+    inputs:
+      targetType: 'filePath'
+      filePath: $(Build.SourcesDirectory)/Set-DockerImageTag.ps1
+      #filePath: $(Build.SourcesDirectory)/dfc-devops/PSCoreScripts/Set-DockerImageTag.ps1
+      arguments: -BuildBuildNumber $(GitVersion.MajorMinorPatch) -BuildSourceBranchName $(Build.SourceBranchName) -BranchRegEx "^(.{3})\w*" -Verbose
+  - script: |
+      docker login -u ${{ parameters.ContainerRegistryAdminUser }} -p ${{ parameters.ContainerRegistryPassword }} ${{ parameters.ContainerRegistryAdminUser }}.azurecr.io
+      docker build -t ${{ parameters.ImageName }} -f docker/Dockerfile  .
+      docker tag ${{ parameters.ImageName }} ${{ parameters.ContainerRegistryAdminUser }}.azurecr.io/${{ parameters.ImageName }}:$(DockerImageTag)
+      docker tag ${{ parameters.ImageName }} ${{ parameters.ContainerRegistryAdminUser }}.azurecr.io/${{ parameters.ImageName }}
+    displayName: 'Build container'
+  - script: |
+      docker login -u ${{ parameters.ContainerRegistryAdminUser }} -p ${{ parameters.ContainerRegistryPassword }} ${{ parameters.ContainerRegistryAdminUser }}.azurecr.io
+      docker push ${{ parameters.ContainerRegistryAdminUser }}.azurecr.io/${{ parameters.ImageName }}:$(DockerImageTag)
+      docker push ${{ parameters.ContainerRegistryAdminUser }}.azurecr.io/${{ parameters.ImageName }}
+    displayName: 'Publish container'
