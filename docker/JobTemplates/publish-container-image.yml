@@ -24,7 +24,7 @@ jobs:
       arguments: -BuildBuildNumber $(GitVersion.MajorMinorPatch) -BuildSourceBranchName $(Build.SourceBranchName) -BranchRegEx "^(.{3})\w*" -Verbose
   - script: |
       docker login -u ${{ parameters.ContainerRegistryAdminUser }} -p ${{ parameters.ContainerRegistryPassword }} ${{ parameters.ContainerRegistryAdminUser }}.azurecr.io
-      docker build -t ${{ parameters.ImageName }} .
+      docker build -t ${{ parameters.ImageName }} -f docker/Dockerfile  .
       docker tag ${{ parameters.ImageName }} ${{ parameters.ContainerRegistryAdminUser }}.azurecr.io/${{ parameters.ImageName }}:$(DockerImageTag)
       docker tag ${{ parameters.ImageName }} ${{ parameters.ContainerRegistryAdminUser }}.azurecr.io/${{ parameters.ImageName }}
     displayName: 'Build container'
