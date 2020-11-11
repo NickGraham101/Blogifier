@@ -21,38 +21,32 @@ Task("Build").IsDependentOn("Clean").Does(() =>
 			}
 		);
 	}
-	
-	CopyFileToDirectory("../plugins/Common/bin/Release/netcoreapp2.1/Common.dll", "./publish");
-
-	CopyFileToDirectory("../src/Upgrade/bin/Release/netcoreapp2.1/Upgrade.dll", "./publish");
-	CopyFileToDirectory("../src/Upgrade/bin/Release/netcoreapp2.1/Upgrade.deps.json", "./publish");
-	CopyFileToDirectory("../src/Upgrade/bin/Release/netcoreapp2.1/Upgrade.runtimeconfig.json", "./publish");
 });
 
 Task("Test").IsDependentOn("Build").Does(() =>
 {
-	var projects = GetFiles("../tests/**/*.csproj");
-	foreach(var project in projects)
-	{
-		DotNetCoreTest(project.ToString());
-	}
+	//var projects = GetFiles("../tests/**/*.csproj");
+	//foreach(var project in projects)
+	//{
+	//	DotNetCoreTest(project.ToString());
+	//}
 });
 
 Task("Default").IsDependentOn("Test").Does(() =>
 {
 	var settings = new DotNetCorePublishSettings
     {
-        Framework = "netcoreapp2.1",
+        Framework = "netcoreapp3.1",
         Configuration = "Release",
         OutputDirectory = "./publish/"
     };
-    DotNetCorePublish("../src/App/App.csproj", settings);
+    DotNetCorePublish("../src/Blogifier/Blogifier.csproj", settings);
 
 	if(demo == "true")
 	{
 		var appjson = File("./publish/appsettings.json");
 		var fileContent = System.IO.File.ReadAllText(appjson);
-		fileContent = fileContent.Replace("\"DemoMode\": false", "\"DemoMode\": true"); 
+		fileContent = fileContent.Replace("\"Demo\": false", "\"Demo\": true"); 
 		System.IO.File.WriteAllText(appjson, fileContent);
 	}
 });

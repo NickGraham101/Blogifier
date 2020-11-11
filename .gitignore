@@ -233,4 +233,9 @@ _Pvt_Extensions
 
 PublishProfiles/
 
-**/Logs/*
+src/Blogifier/Logs
+
+package-lock.json
+
+build/tools
+build/publish
