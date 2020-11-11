@@ -13,7 +13,7 @@ jobs:
       versionSpec: 5.x
   - task: gittools.gittools.execute-gitversion-task.gitversion/execute@0
     displayName: gitversion/execute
-  - powershell: Invoke-WebRequest -Uri https://raw.githubusercontent.com/NickGraham101/dfc-devops/AddSetDockerImageTagsScript/PSCoreScripts/Set-DockerImageTag.ps1 -OutFile $(Build.SourcesDirectory)/Set-DockerImageTag.ps1
+  - powershell: Invoke-WebRequest -Uri https://raw.githubusercontent.com/NickGraham101/dfc-devops/master/PSCoreScripts/Set-DockerImageTag.ps1 -OutFile $(Build.SourcesDirectory)/Set-DockerImageTag.ps1
     displayName: 'Download Set-DockerImageTag.ps1 script'
   - task: PowerShell@2
     displayName: 'PowerShell: Set-DockerImageTag'
